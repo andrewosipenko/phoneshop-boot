@@ -1,19 +1,23 @@
 package com.expertsoft.phoneshop.service;
 
+import com.expertsoft.phoneshop.PhoneShopPaginationConfiguration;
 import com.expertsoft.phoneshop.service.dto.PaginationDto;
+
+import javax.annotation.Resource;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PaginationService {
-    private Integer defaultPageSize = 7;
-    private Integer defaultPlpMaxPages = 5;
+    @Resource
+    private PhoneShopPaginationConfiguration paginationConfiguration;
 
     public PaginationDto createPagination(Page<?> totalResult, Integer currentPage) {
         PaginationDto paginationDto = new PaginationDto();
         paginationDto.setCurrentPage(currentPage + 1);
         paginationDto.setTotalPages(totalResult.getTotalPages());
-        paginationDto.setPageSize(defaultPageSize);
+        paginationDto.setPageSize(paginationConfiguration.getDefaultPageSize());
         paginationDto.setHasLeftArrow(currentPage != 0);
         paginationDto.setHasRightArrow(currentPage != paginationDto.getTotalPages() - 1);
         int start = getStart(currentPage);
@@ -23,12 +27,13 @@ public class PaginationService {
     }
 
     private int getEnd(PaginationDto paginationDto, int start) {
-        return start + defaultPlpMaxPages - 1 < paginationDto.getTotalPages() ? start + defaultPlpMaxPages - 1
+        return start + paginationConfiguration.getPlpMaxPages() - 1 < paginationDto.getTotalPages()
+                ? start + paginationConfiguration.getPlpMaxPages() - 1
                 : paginationDto.getTotalPages();
     }
 
     private int getStart(Integer currentPage) {
-        int start = currentPage - (defaultPlpMaxPages - 1) / 2;
+        int start = currentPage - (paginationConfiguration.getPlpMaxPages() - 1) / 2;
         if (start < 0) {
             start = 0;
         }
