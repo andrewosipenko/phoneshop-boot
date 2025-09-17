@@ -1,11 +1,15 @@
 package com.expertsoft.phoneshop.service;
 
 import com.expertsoft.phoneshop.PhoneShopPaginationConfiguration;
-import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
+import com.expertsoft.phoneshop.service.convertor.PhoneConverter;
+import com.expertsoft.phoneshop.service.dto.PhoneDto;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
@@ -18,7 +22,24 @@ public class PhoneService {
     @Resource
     private PhoneShopPaginationConfiguration paginationConfiguration;
 
-    public Page<Phone> getPhonesPage(Integer zeroBasedPage) {
-        return phoneRepository.findAll(PageRequest.of(zeroBasedPage, paginationConfiguration.getDefaultPageSize()));
+    @Resource
+    private PhoneConverter phoneConverter;
+
+    public Page<PhoneDto> getPhonesPage(Integer oneBasedIndex) {
+        Long count = phoneRepository.count();
+        return phoneRepository
+                .findAll(PageRequest.of(oneBasedIndex - 1,
+                        Math.toIntExact(count) / paginationConfiguration.getPlpMaxPages()))
+                .map(phoneConverter::convert);
     }
+
+    public Optional<PhoneDto> getPhoneById(Long id) {
+        return phoneRepository.findOneById(id)
+                .map(phoneConverter::convert);
+    }
+
+    public Page<PhoneDto> getPhonesSearchPage(Integer zeroBasePage, String query, Double priceFrom, Double priceTo) {
+        return null;
+    }
+
 }

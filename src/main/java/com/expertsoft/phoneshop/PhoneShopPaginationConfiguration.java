@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "phoneshop")
 public class PhoneShopPaginationConfiguration {
     private Integer plpMaxPages;
-    private Integer defaultPageSize;
 
     public Integer getPlpMaxPages() {
         return plpMaxPages;
@@ -17,11 +16,4 @@ public class PhoneShopPaginationConfiguration {
         this.plpMaxPages = plpMaxPages;
     }
 
-    public Integer getDefaultPageSize() {
-        return defaultPageSize;
-    }
-
-    public void setDefaultPageSize(Integer defaultPageSize) {
-        this.defaultPageSize = defaultPageSize;
-    }
 }

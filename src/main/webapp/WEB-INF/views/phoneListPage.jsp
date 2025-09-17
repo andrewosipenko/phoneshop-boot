@@ -29,33 +29,32 @@
                                 </c:forEach>
                             </tbody>
                         </table>
-
-                        <nav>
-                            <ul class="pagination">
-                                <c:if test="${paginationInfo.hasLeftArrow}">
-                                    <li class="page-item"><a class="page-link"
-                                            href="?page=${paginationInfo.currentPage - 1}">Previous</a></li>
-                                </c:if>
-                                <c:forEach var="counter" begin="${paginationInfo.startPage}"
-                                    end="${paginationInfo.endPage}">
-                                    <c:if test="${paginationInfo.currentPage == counter}">
-                                        <li class="page-item active"><a class="page-link"
-                                                href="?page=${counter}">${counter}</a>
-                                        </li>
-                                    </c:if>
-                                    <c:if test="${paginationInfo.currentPage != counter}">
+                        <div class="d-flex justify-content-center">
+                            <nav>
+                                <ul class="pagination">
+                                    <c:if test="${paginationInfo.hasLeftArrow}">
                                         <li class="page-item"><a class="page-link"
-                                                href="?page=${counter}">${counter}</a>
-                                        </li>
+                                                href="?page=${paginationInfo.currentPage - 1}">Previous</a></li>
+                                    </c:if>
+                                    <c:forEach var="counter" begin="${1}" end="${paginationInfo.totalPages}">
+                                        <c:if test="${paginationInfo.currentPage == counter}">
+                                            <li class="page-item active"><a class="page-link"
+                                                    href="?page=${counter}">${counter}</a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${paginationInfo.currentPage != counter}">
+                                            <li class="page-item"><a class="page-link"
+                                                    href="?page=${counter}">${counter}</a>
+                                            </li>
+                                        </c:if>
+
+                                    </c:forEach>
+                                    <c:if test="${paginationInfo.hasRightArrow}">
+                                        <li class="page-item"><a class="page-link"
+                                                href="?page=${paginationInfo.currentPage + 1}">Next</a></li>
                                     </c:if>
 
-                                </c:forEach>
-                                <c:if test="${paginationInfo.hasRightArrow}">
-                                    <li class="page-item"><a class="page-link"
-                                            href="?page=${paginationInfo.currentPage + 1}">Next</a></li>
-                                </c:if>
-
-                            </ul>
-                        </nav>
-
+                                </ul>
+                            </nav>
+                        </div>
                     </common:page>
