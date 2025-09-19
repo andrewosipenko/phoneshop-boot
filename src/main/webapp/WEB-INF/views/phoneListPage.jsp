@@ -4,6 +4,44 @@
             <%@ taglib prefix="phone" tagdir="/WEB-INF/tags/phone" %>
                 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
                     <common:page pageTitle="Phone list" showMenu="true">
+                        <div class="search-container">
+                            <h2 class="form-title"><i class="bi bi-search me-2"></i>Advanced Search</h2>
+                            <form action="/phones">
+                                <div class="mb-4">
+                                    <label for="query" class="form-label">Search Term</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="query" name="q"
+                                            placeholder="Enter your search terms..." value="${param.q}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="priceFrom" class="form-label">Price From</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                        <input type="text" class="form-control" id="priceFrom" name="priceFrom"
+                                            placeholder="Enter price from" value="${param.priceFrom}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="priceTo" class="form-label">Price To</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                        <input type="text" class="form-control" id="priceTo" name="priceTo"
+                                            placeholder="Enter price to" value="${param.priceTo}">
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-search me-2"></i>Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
                         <div class="row justify-content-center font-italic mb-3">
                             Found
                             <c:out value="${phones.totalElements}" /> results!
@@ -33,25 +71,17 @@
                             <nav>
                                 <ul class="pagination">
                                     <c:if test="${paginationInfo.hasLeftArrow}">
-                                        <li class="page-item"><a class="page-link"
-                                                href="?page=${paginationInfo.currentPage - 1}">Previous</a></li>
+                                        <common:paginationUrl q="${param.q}" page="${counter}"
+                                            priceFrom="${param.priceFrom}" priceTo="${param.priceTo}" text="Previous" />
                                     </c:if>
                                     <c:forEach var="counter" begin="${1}" end="${paginationInfo.totalPages}">
-                                        <c:if test="${paginationInfo.currentPage == counter}">
-                                            <li class="page-item active"><a class="page-link"
-                                                    href="?page=${counter}">${counter}</a>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${paginationInfo.currentPage != counter}">
-                                            <li class="page-item"><a class="page-link"
-                                                    href="?page=${counter}">${counter}</a>
-                                            </li>
-                                        </c:if>
-
+                                        <common:paginationUrl q="${param.q}" page="${counter}"
+                                            priceFrom="${param.priceFrom}" priceTo="${param.priceTo}"
+                                            currentPage="${paginationInfo.currentPage}" text="${counter}" />
                                     </c:forEach>
                                     <c:if test="${paginationInfo.hasRightArrow}">
-                                        <li class="page-item"><a class="page-link"
-                                                href="?page=${paginationInfo.currentPage + 1}">Next</a></li>
+                                        <common:paginationUrl q="${param.q}" page="${counter}"
+                                            priceFrom="${param.priceFrom}" priceTo="${param.priceTo}" text="Next" />
                                     </c:if>
 
                                 </ul>

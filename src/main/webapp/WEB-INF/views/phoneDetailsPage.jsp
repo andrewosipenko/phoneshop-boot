@@ -2,30 +2,46 @@
     <%@ taglib prefix="common" tagdir="/WEB-INF/tags/common" %>
         <%@ page contentType="text/html;charset=UTF-8" language="java" %>
             <common:page pageTitle="Phone details" showMenu="true">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="phone-card">
+                                <div class="row align-items-center">
+                                    <div class="col-md-5 text-center mb-4 mb-md-0">
+                                        <img src='<c:url value="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.image}" />'
+                                            class="phone-image img-fluid" width="300" alt="Phone image">
+                                    </div>
 
-                <div class="row justify-content-md-center">
-                    <div class="d-flex bd-highlight">
-                        <div class="p-2 flex-fill bd-highlight"><img
-                                src='<c:url value="
-                        https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.image}" />' width="300" height="300"
-                                alt="Phone image"></div>
-                        <div class="p-2 flex-fill bd-highlight">
-                            <div class="d-flex flex-column bd-highlight mb-3">
-                                <div class="p-2 bd-highlight">
-                                    <p class="font-weight-bold">Brand:</p>
-                                    <c:out value="${phone.brand}" />
-                                </div>
-                                <div class="p-2 bd-highlight">
-                                    <p class="font-weight-bold">Model:</p>
-                                    <c:out value="${phone.model}" />
-                                </div>
-                                <div class="p-2 bd-highlight">
-                                    <p class="font-weight-bold">Price:</p>
-                                    <c:out value="${phone.price}" /> $
-                                </div>
-                                <div class="p-2 bd-highlight col-5">
-                                    <p class="font-weight-bold">Description:</p>
-                                    <c:out value="${phone.description}" />
+                                    <div class="col-md-7">
+                                        <div class="d-flex flex-column">
+                                            <div class="mb-3">
+                                                <p class="specs-title font-weight-bold">Brand:</p>
+                                                <p class="specs-value">
+                                                    <c:out value="${phone.brand}" />
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <p class="specs-title font-weight-bold">Model:</p>
+                                                <p class="specs-value">
+                                                    <c:out value="${phone.model}" />
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <p class="specs-title font-weight-bold">Price:</p>
+                                                <p class="specs-value price-value">
+                                                    <c:out value="${phone.price}" /> $
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <p class="specs-title font-weight-bold">Description:</p>
+                                                <div class="description-box">
+                                                    <p>
+                                                        <c:out value="${phone.description}" />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

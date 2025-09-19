@@ -31,8 +31,23 @@ public class PhoneListPageController {
     @GetMapping
     public String getPhoneList(Model model, @RequestParam(value = "page", defaultValue = "1") Integer page) {
         Page<PhoneDto> phonesPage = phoneService.getPhonesPage(page);
-        model.addAttribute(PHONES, phonesPage);
-        model.addAttribute(PAGINATION_INFO, paginationService.createPagination(phonesPage, page));
+        setModelAttributes(model, page, phonesPage);
         return PHONE_LIST_PAGE;
     }
+
+    private void setModelAttributes(Model model, Integer page, Page<PhoneDto> phonesPage) {
+        model.addAttribute(PHONES, phonesPage);
+        model.addAttribute(PAGINATION_INFO, paginationService.createPagination(phonesPage, page));
+    }
+
+    @GetMapping(params = "q")
+    public String getPSP(Model model, @RequestParam("q") String query,
+            @RequestParam(value = "priceFrom", required = false) Double priceFrom,
+            @RequestParam(value = "priceTo", required = false) Double priceTo,
+            @RequestParam(value = "page", defaultValue = "1") Integer page) {
+        Page<PhoneDto> phonesPage = phoneService.getPhonesSearchPage(page, query, priceFrom, priceTo);
+        setModelAttributes(model, page, phonesPage);
+        return PHONE_LIST_PAGE;
+    }
+
 }
