@@ -4,10 +4,12 @@ import com.expertsoft.phoneshop.PhoneShopPaginationConfiguration;
 import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
 import com.expertsoft.phoneshop.service.convertor.PhoneConverter;
+import com.expertsoft.phoneshop.service.convertor.SortConvertor;
 import com.expertsoft.phoneshop.service.dto.PhoneDto;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,16 +29,20 @@ public class PhoneService {
     @Resource
     private PhoneConverter phoneConverter;
 
-    public Page<PhoneDto> getPhonesPage(Integer oneBasedIndex) {
+    @Resource
+    private SortConvertor sortConvertor;
+
+    public Page<PhoneDto> getPhonesPage(Integer oneBasedIndex, String sort) {
         return phoneRepository
-                .findAll(getPageRequest(oneBasedIndex))
+                .findAll(getPageRequest(oneBasedIndex, sort))
                 .map(phoneConverter::convert);
     }
 
-    private PageRequest getPageRequest(Integer oneBasedIndex) {
+    private PageRequest getPageRequest(Integer oneBasedIndex, String sort) {
+        Sort sorting = sortConvertor.convert(sort);
         Long count = phoneRepository.count();
         return PageRequest.of(oneBasedIndex - 1,
-                Math.toIntExact(count) / paginationConfiguration.getPlpMaxPages());
+                Math.toIntExact(count) / paginationConfiguration.getPlpMaxPages(), sorting);
     }
 
     public Optional<PhoneDto> getPhoneById(Long id) {
@@ -44,15 +50,16 @@ public class PhoneService {
                 .map(phoneConverter::convert);
     }
 
-    public Page<PhoneDto> getPhonesSearchPage(Integer oneBasedIndex, String query, Double priceFrom, Double priceTo) {
+    public Page<PhoneDto> getPhonesSearchPage(Integer oneBasedIndex, String query, Double priceFrom, Double priceTo,
+            String sort) {
         Page<Phone> result;
         if (query == null) {
             result = phoneRepository.findAllByPriceBetween(getPriceTo(priceFrom), getPriceFrom(priceTo),
-                    getPageRequest(oneBasedIndex));
+                    getPageRequest(oneBasedIndex, sort));
         } else {
             result = phoneRepository.findAllByBrandContainingAndModelContainingAndPriceBetween(query,
                     getPriceFrom(priceFrom), getPriceTo(priceTo),
-                    getPageRequest(oneBasedIndex));
+                    getPageRequest(oneBasedIndex, sort));
         }
         return result.map(phoneConverter::convert);
     }

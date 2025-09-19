@@ -51,13 +51,16 @@
                                 <tr>
                                     <th scope="col">Image</th>
                                     <th scope="col">Brand
-                                        <util:sorting />
+                                        <util:sorting q="${param.q}" priceFrom="${param.priceFrom}"
+                                            priceTo="${param.priceTo}" field="brand" currentSort="${param.sort}" />
                                     </th>
                                     <th scope="col">Model
-                                        <util:sorting />
+                                        <util:sorting q="${param.q}" priceFrom="${param.priceFrom}"
+                                            priceTo="${param.priceTo}" field="model" currentSort="${param.sort}" />
                                     </th>
                                     <th scope="col">Price
-                                        <util:sorting />
+                                        <util:sorting q="${param.q}" priceFrom="${param.priceFrom}"
+                                            priceTo="${param.priceTo}" field="price" currentSort="${param.sort}" />
                                     </th>
                                 </tr>
                             </thead>
