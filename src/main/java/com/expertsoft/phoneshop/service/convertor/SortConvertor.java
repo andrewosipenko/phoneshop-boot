@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,6 +14,7 @@ public class SortConvertor implements Converter<String, Sort> {
     private static final Pattern PATTERN = Pattern.compile("([A-z]+)-(asc|desc)");
 
     @Override
+    @Nullable
     public Sort convert(String source) {
         Sort result = Sort.unsorted();
         if (source != null) {

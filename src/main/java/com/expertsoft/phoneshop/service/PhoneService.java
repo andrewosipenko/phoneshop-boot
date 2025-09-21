@@ -3,10 +3,9 @@ package com.expertsoft.phoneshop.service;
 import com.expertsoft.phoneshop.PhoneShopPaginationConfiguration;
 import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
-import com.expertsoft.phoneshop.service.convertor.PhoneConverter;
-import com.expertsoft.phoneshop.service.convertor.SortConvertor;
 import com.expertsoft.phoneshop.service.dto.PhoneDto;
 
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,10 +26,10 @@ public class PhoneService {
     private PhoneShopPaginationConfiguration paginationConfiguration;
 
     @Resource
-    private PhoneConverter phoneConverter;
+    private Converter<Phone, PhoneDto> phoneConverter;
 
     @Resource
-    private SortConvertor sortConvertor;
+    private Converter<String, Sort> sortConvertor;
 
     public Page<PhoneDto> getPhonesPage(Integer oneBasedIndex, String sort) {
         return phoneRepository
