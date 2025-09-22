@@ -9,13 +9,12 @@ import com.expertsoft.phoneshop.strategy.LoginExtractionStrategy;
 @Component
 public class GithubOauth2LoginExtractionStrategy implements LoginExtractionStrategy {
 
+    private static final String CLIENT_ID_GITHUB = "github";
+
     @Override
     public boolean isApplicable(Authentication authentication) {
-        if (authentication instanceof OAuth2AuthenticationToken && ("github"
-                .equals(((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()))) {
-            return true;
-        }
-        return false;
+        return authentication instanceof OAuth2AuthenticationToken && CLIENT_ID_GITHUB
+                .equals(((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId());
     }
 
     @Override

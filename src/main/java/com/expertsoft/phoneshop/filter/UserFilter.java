@@ -15,14 +15,19 @@ import com.expertsoft.phoneshop.service.UserService;
 
 @Component
 public class UserFilter implements Filter {
+    private static final String CURRENT_USER = "currentUser";
     @Resource
     private UserService userService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        request.setAttribute("currentUser", userService.getCurrentUser());
+        request.setAttribute(CURRENT_USER, userService.getCurrentUser());
         chain.doFilter(request, response);
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
 }

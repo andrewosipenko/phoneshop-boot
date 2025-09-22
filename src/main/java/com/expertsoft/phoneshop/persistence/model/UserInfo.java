@@ -1,13 +1,19 @@
 package com.expertsoft.phoneshop.persistence.model;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
-public class UserInfo {
+public class UserInfo implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,14 +24,15 @@ public class UserInfo {
     private String bio;
     @Column(unique = true)
     private String login;
-    private String role;
+    private String authorities;
+    private String password;
 
-    public String getRole() {
-        return role;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthorities(String role) {
+        this.authorities = role;
     }
 
     public Long getId() {
@@ -82,6 +89,41 @@ public class UserInfo {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

@@ -12,10 +12,13 @@ import com.expertsoft.phoneshop.persistence.model.UserInfo;
 @Component
 public class UserInfoConverter implements Converter<OAuth2AuthenticationToken, UserInfo> {
 
+    private static final String DEFAULT_AUTHORITY = "ROLE_USER";
+
     @Override
     @Nullable
     public UserInfo convert(OAuth2AuthenticationToken source) {
         UserInfo userInfo = new UserInfo();
+        userInfo.setAuthorities(DEFAULT_AUTHORITY);
         Optional.ofNullable(source.getPrincipal().getAttribute("login"))
                 .map(Object::toString)
                 .ifPresent(userInfo::setLogin);

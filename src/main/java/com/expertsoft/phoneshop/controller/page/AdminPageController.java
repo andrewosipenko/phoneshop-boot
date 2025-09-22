@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequestMapping(ADMIN_PATH)
 public class AdminPageController {
+    private static final String ADMIN_PANEL_PAGE = "admin/adminPanelPage";
+    private static final String USERS = "users";
     @Resource
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping
     public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return ADMIN_PATH;
+        model.addAttribute(USERS, userService.getAllUsers());
+        return ADMIN_PANEL_PAGE;
     }
 
 }
