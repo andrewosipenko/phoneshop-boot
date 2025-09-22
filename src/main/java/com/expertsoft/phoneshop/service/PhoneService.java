@@ -1,20 +1,16 @@
 package com.expertsoft.phoneshop.service;
 
-import com.expertsoft.phoneshop.persistence.model.Phone;
-import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
+import com.expertsoft.phoneshop.service.dto.PhoneDto;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-import javax.annotation.Resource;
+public interface PhoneService {
 
-@Service
-public class PhoneService {
+    public Page<PhoneDto> getPhonesPage(Integer oneBasedIndex, String sort);
 
-    @Resource
-    private PhoneRepository phoneRepository;
+    public Optional<PhoneDto> getPhoneById(Long id);
 
-    public Page<Phone> getPhonesPage(Pageable pageable) {
-        return phoneRepository.findAll(pageable);
-    }
+    public Page<PhoneDto> getPhonesSearchPage(Integer oneBasedIndex, String query, Double priceFrom, Double priceTo,
+            String sort);
 }

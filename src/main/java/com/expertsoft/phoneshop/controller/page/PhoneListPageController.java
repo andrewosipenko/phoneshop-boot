@@ -1,11 +1,15 @@
 package com.expertsoft.phoneshop.controller.page;
 
+import com.expertsoft.phoneshop.service.PaginationService;
 import com.expertsoft.phoneshop.service.PhoneService;
-import org.springframework.data.domain.Pageable;
+import com.expertsoft.phoneshop.service.dto.PhoneDto;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 
@@ -17,14 +21,35 @@ public class PhoneListPageController {
 
     private static final String PHONE_LIST_PAGE = "phoneListPage";
     private static final String PHONES = "phones";
+    private static final String PAGINATION_INFO = "paginationInfo";
 
     @Resource
     private PhoneService phoneService;
+    @Resource
+    private PaginationService paginationService;
 
     @GetMapping
-    public String getPhoneList(Model model) {
-        model.addAttribute(PHONES, phoneService.getPhonesPage(Pageable.unpaged()));
-
+    public String getPhoneList(Model model, @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "sort", required = false) String sort) {
+        Page<PhoneDto> phonesPage = phoneService.getPhonesPage(page, sort);
+        setModelAttributes(model, page, phonesPage);
         return PHONE_LIST_PAGE;
     }
+
+    private void setModelAttributes(Model model, Integer page, Page<PhoneDto> phonesPage) {
+        model.addAttribute(PHONES, phonesPage);
+        model.addAttribute(PAGINATION_INFO, paginationService.createPagination(phonesPage, page));
+    }
+
+    @GetMapping(params = "q")
+    public String getPSP(Model model, @RequestParam("q") String query,
+            @RequestParam(value = "priceFrom", required = false) Double priceFrom,
+            @RequestParam(value = "priceTo", required = false) Double priceTo,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "sort", required = false) String sort) {
+        Page<PhoneDto> phonesPage = phoneService.getPhonesSearchPage(page, query, priceFrom, priceTo, sort);
+        setModelAttributes(model, page, phonesPage);
+        return PHONE_LIST_PAGE;
+    }
+
 }
