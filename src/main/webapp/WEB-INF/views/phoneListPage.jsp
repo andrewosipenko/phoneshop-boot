@@ -21,9 +21,9 @@
         <thead>
         <tr>
             <th scope="col">Image</th>
-            <th scope="col">Brand <util:sorting/></th>
-            <th scope="col">Model <util:sorting/></th>
-            <th scope="col">Price <util:sorting/></th>
+            <th scope="col">Brand <util:sorting field="brand"/></th>
+            <th scope="col">Model <util:sorting field="model"/></th>
+            <th scope="col">Price <util:sorting field="price"/></th>
         </tr>
         </thead>
         <tbody>
@@ -38,18 +38,18 @@
       <ul class="pagination">
         <li class="page-item ${pagination.hasPrevious ? '' : 'disabled'}">
           <a class="page-link"
-             href="${pagination.hasPrevious ? '?page='.concat(pagination.previousPage) : '#'}">Previous</a>
+             href="<util:pageUrl pageNumber="${pagination.previousPage}"/>">Previous</a>
         </li>
 
         <c:forEach begin="${pagination.first}" end="${pagination.last}" var="p">
           <li class="page-item ${p == pagination.currentPage ? 'active' : ''}">
-            <a class="page-link" href="?page=${p}">${p}</a>
+            <a class="page-link" href="<util:pageUrl pageNumber="${p}"/>">${p}</a>
           </li>
         </c:forEach>
 
         <li class="page-item ${pagination.hasNext ? '' : 'disabled'}">
           <a class="page-link"
-             href="${pagination.hasNext ? '?page='.concat(pagination.nextPage) : '#'}">Next</a>
+             href="<util:pageUrl pageNumber="${pagination.nextPage}"/>">Next</a>
         </li>
       </ul>
     </nav>

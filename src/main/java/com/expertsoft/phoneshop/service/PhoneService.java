@@ -1,12 +1,12 @@
 package com.expertsoft.phoneshop.service;
 
 import com.expertsoft.phoneshop.config.PlpConfiguration;
+import com.expertsoft.phoneshop.data.SortData;
 import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,17 +23,23 @@ public class PhoneService {
     @Resource
     private PlpConfiguration plpConfiguration;
 
-    public Page<Phone> getPhonesPage(Pageable pageable) {
-        return phoneRepository.findAll(pageable);
+    @Resource
+    private SortService sortService;
+
+    public Page<Phone> getPhonesPage(int page, SortData sortData) {
+        return phoneRepository.findAll(createPageable(page, sortData));
     }
 
     public Optional<Phone> getPhoneById(long id) {
         return phoneRepository.findById(id);
     }
 
-    public Page<Phone> getPhonesSearchPage(int page, String query, BigDecimal priceFrom, BigDecimal priceTo) {
-        Pageable pageable = PageRequest.of(page - 1, plpConfiguration.getPlpMaxProducts());
+    public Page<Phone> getPhonesSearchPage(int page, String query, BigDecimal priceFrom, BigDecimal priceTo, SortData sortData) {
         String normalized = StringUtils.hasText(query) ? query.trim() : null;
-        return phoneRepository.search(normalized, priceFrom, priceTo, pageable);
+        return phoneRepository.search(normalized, priceFrom, priceTo, createPageable(page, sortData));
+    }
+
+    private Pageable createPageable(int page, SortData sortData) {
+        return PageRequest.of(Math.max(1, page) - 1, plpConfiguration.getPlpMaxProducts(), sortService.createSort(sortData));
     }
 }
