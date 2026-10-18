@@ -1,6 +1,8 @@
 package com.expertsoft.phoneshop.controller.page;
 
 import com.expertsoft.phoneshop.config.PlpConfiguration;
+import com.expertsoft.phoneshop.data.PhoneData;
+import com.expertsoft.phoneshop.facade.PhoneFacade;
 import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.service.PaginationService;
 import com.expertsoft.phoneshop.service.PhoneService;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 
+import java.math.BigDecimal;
+
 import static com.expertsoft.phoneshop.PhoneShopConstants.PHONES_PATH;
 
 @Controller
@@ -25,8 +29,9 @@ public class PhoneListPageController {
     private static final String PHONES = "phones";
     private static final String PAGE_PARAM = "page";
     private static final String PAGINATION = "pagination";
+
     @Resource
-    private PhoneService phoneService;
+    private PhoneFacade phoneFacade;
 
     @Resource
     private PaginationService paginationService;
@@ -39,7 +44,7 @@ public class PhoneListPageController {
                                Model model) {
         int requestedPage = Math.max(1, page);
         Pageable pageable = PageRequest.of(requestedPage - 1, plpConfiguration.getPlpMaxProducts());
-        Page<Phone> phonesPage = phoneService.getPhonesPage(pageable);
+        Page<PhoneData> phonesPage = phoneFacade.getPhonesPage(pageable);
         if (phonesPage.getTotalPages() > 0 && requestedPage > phonesPage.getTotalPages()) {
             return "redirect:" + PHONES_PATH + "?" + PAGE_PARAM + "=" + phonesPage.getTotalPages();
         }
@@ -47,4 +52,17 @@ public class PhoneListPageController {
         model.addAttribute(PAGINATION, paginationService.createPaginationData(phonesPage, requestedPage));
         return PHONE_LIST_PAGE;
     }
+
+    @GetMapping(params = "query")
+    public String getSearchPage(Model model, @RequestParam("query") String query,
+                         @RequestParam(value = "priceFrom", required = false) BigDecimal priceFrom,
+                         @RequestParam(value = "priceTo", required = false) BigDecimal priceTo,
+                         @RequestParam(value = "page", defaultValue = "1") Integer page) {
+        int requestedPage = Math.max(1, page);
+        Page<PhoneData> phonesPage = phoneFacade.getPhonesSearchPage(requestedPage, query, priceFrom, priceTo);
+        model.addAttribute(PHONES, phonesPage);
+        model.addAttribute(PAGINATION, paginationService.createPaginationData(phonesPage, page));
+        return PHONE_LIST_PAGE;
+    }
+
 }

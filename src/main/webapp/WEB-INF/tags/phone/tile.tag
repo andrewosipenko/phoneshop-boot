@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="phone" required="true" type="com.expertsoft.phoneshop.persistence.model.Phone" %>
+<%@ attribute name="phone" required="true" type="com.expertsoft.phoneshop.data.PhoneData" %>
 <c:url var="pdpLink" value="/phones/${phone.id}"/>
 <tr>
     <td>

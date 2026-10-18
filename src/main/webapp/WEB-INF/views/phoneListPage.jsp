@@ -7,6 +7,16 @@
     <div class="row justify-content-center font-italic mb-3">
         Found <c:out value="${phones.totalElements}"/> results!
     </div>
+    <form method="get" action="<c:url value='/phones'/>" class="border rounded p-3">
+        <label for="query" class="form-label">Search Term</label>
+        <input type="text" name="query" value="<c:out value='${param.query}'/>"/>
+        <label for="priceFrom" class="form-label">Price From</label>
+        <input type="text" name="priceFrom" value="<c:out value='${param.priceFrom}'/>"/>
+        <label for="priceTo" class="form-label">Price To</label>
+        <input type="text" name="priceTo" value="<c:out value='${param.priceTo}'/>"/>
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+    </form>
+    <a href="<c:url value='/phones'/>">Clear</a>
     <table class="table table-striped">
         <thead>
         <tr>
