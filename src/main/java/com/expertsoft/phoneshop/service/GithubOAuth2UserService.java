@@ -1,6 +1,6 @@
 package com.expertsoft.phoneshop.service;
 
-import com.expertsoft.phoneshop.persistence.model.Client;
+import com.expertsoft.phoneshop.persistence.model.UserAccount;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -14,7 +14,7 @@ import java.util.Map;
 public class GithubOAuth2UserService extends DefaultOAuth2UserService {
 
     @Resource
-    private ClientService userService;
+    private UserAccountService userService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -23,8 +23,8 @@ public class GithubOAuth2UserService extends DefaultOAuth2UserService {
         return oAuth2User;
     }
 
-    Client toClient(Map<String, Object> attributes) {
-        Client user = new Client();
+    UserAccount toClient(Map<String, Object> attributes) {
+        UserAccount user = new UserAccount();
         user.setLogin((String) attributes.get("login"));
         user.setName((String) attributes.get("name"));
         user.setBio((String) attributes.get("bio"));

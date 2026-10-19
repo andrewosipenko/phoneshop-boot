@@ -1,6 +1,6 @@
 package com.expertsoft.phoneshop.service;
 
-import com.expertsoft.phoneshop.config.PlpConfiguration;
+import com.expertsoft.phoneshop.config.PagesConfiguration;
 import com.expertsoft.phoneshop.data.SortData;
 import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
@@ -21,7 +21,7 @@ public class PhoneService {
     private PhoneRepository phoneRepository;
 
     @Resource
-    private PlpConfiguration plpConfiguration;
+    private PagesConfiguration pagesConfiguration;
 
     @Resource
     private SortService sortService;
@@ -40,6 +40,6 @@ public class PhoneService {
     }
 
     private Pageable createPageable(int page, SortData sortData) {
-        return PageRequest.of(Math.max(1, page) - 1, plpConfiguration.getPlpMaxProducts(), sortService.createSort(sortData));
+        return PageRequest.of(Math.max(1, page) - 1, pagesConfiguration.getPlpMaxProducts(), sortService.createSort(sortData));
     }
 }

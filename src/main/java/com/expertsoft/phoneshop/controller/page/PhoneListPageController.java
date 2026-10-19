@@ -1,6 +1,6 @@
 package com.expertsoft.phoneshop.controller.page;
 
-import com.expertsoft.phoneshop.config.PlpConfiguration;
+import com.expertsoft.phoneshop.config.PagesConfiguration;
 import com.expertsoft.phoneshop.data.PhoneData;
 import com.expertsoft.phoneshop.data.SortData;
 import com.expertsoft.phoneshop.facade.PhoneFacade;
@@ -35,7 +35,7 @@ public class PhoneListPageController {
     private PaginationService paginationService;
 
     @Resource
-    private PlpConfiguration plpConfiguration;
+    private PagesConfiguration pagesConfiguration;
 
     @GetMapping
     public String getPhoneList(@RequestParam(name = PAGE_PARAM, defaultValue = "1") int page,

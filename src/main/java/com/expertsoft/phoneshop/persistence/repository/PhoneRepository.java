@@ -11,7 +11,8 @@ import java.math.BigDecimal;
 
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
     @Query("select p from Phone p where " +
-            "(:query is null or lower(p.brand) like lower(concat('%', :query, '%'))) " +
+            "(:query is null or lower(p.brand) like lower(concat('%', :query, '%')) " +
+            "or lower(p.model) like lower(concat('%', :query, '%'))) " +
             "and (:priceFrom is null or p.price >= :priceFrom) " +
             "and (:priceTo is null or p.price <= :priceTo)")
     Page<Phone> search(@Param("query") String query,
